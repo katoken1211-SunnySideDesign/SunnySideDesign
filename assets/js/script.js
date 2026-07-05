@@ -1,53 +1,71 @@
-// Mobile nav toggle
-const navToggle = document.getElementById('navToggle');
-const primaryNav = document.getElementById('primaryNav');
+// ===== Mobile Menu Toggle =====
+const menuToggle = document.querySelector('.menu-toggle');
+const siteNav = document.querySelector('.site-nav');
 
-if(navToggle){
-  navToggle.addEventListener('click', ()=>{
-    const expanded = navToggle.getAttribute('aria-expanded') === 'true';
-    navToggle.setAttribute('aria-expanded', String(!expanded));
-    primaryNav.classList.toggle('open');
+if (menuToggle) {
+  menuToggle.addEventListener('click', () => {
+    const expanded = menuToggle.getAttribute('aria-expanded') === 'true';
+    menuToggle.setAttribute('aria-expanded', String(!expanded));
+    siteNav.classList.toggle('open');
   });
 }
 
-// Close nav when clicking links (for mobile)
-document.querySelectorAll('.site-nav a').forEach(a=>{
-  a.addEventListener('click', ()=>{
-    if(primaryNav.classList.contains('open')){
-      primaryNav.classList.remove('open');
-      navToggle && navToggle.setAttribute('aria-expanded','false');
+// Close menu when clicking on links
+document.querySelectorAll('.site-nav a').forEach(link => {
+  link.addEventListener('click', () => {
+    if (siteNav && siteNav.classList.contains('open')) {
+      siteNav.classList.remove('open');
+      menuToggle.setAttribute('aria-expanded', 'false');
     }
-  })
+  });
 });
 
-// Smooth scroll for internal links (extra safety if CSS not supported)
-document.querySelectorAll('a[href^="#"]').forEach(link=>{
-  link.addEventListener('click', (e)=>{
+// ===== Smooth Scroll for Anchor Links =====
+document.querySelectorAll('a[href^="#"]').forEach(link => {
+  link.addEventListener('click', (e) => {
     const href = link.getAttribute('href');
-    if(href.length>1){
+    if (href.length > 1) {
       const el = document.querySelector(href);
-      if(el){
+      if (el) {
         e.preventDefault();
-        el.scrollIntoView({behavior:'smooth',block:'start'});
+        el.scrollIntoView({ behavior: 'smooth', block: 'start' });
       }
     }
-  })
+  });
 });
 
-// Intersection Observer for reveal animations
-const io = new IntersectionObserver((entries)=>{
-  entries.forEach(entry=>{
-    if(entry.isIntersecting){
-      entry.target.classList.add('in-view');
-      // optional: unobserve to keep performance
-      io.unobserve(entry.target);
-    }
+// ===== Intersection Observer for Animations =====
+if ('IntersectionObserver' in window) {
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('in-view');
+        observer.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.15 });
+
+  // Observe elements
+  document.querySelectorAll('.work-card, .service-card, .flow-card, .about-content, .hero-content').forEach(el => {
+    observer.observe(el);
   });
-},{threshold:0.12});
-
-document.querySelectorAll('.work-card, .service-card, .step, .about-copy, .hero-copy').forEach(el=>io.observe(el));
-
-// Add fallback: if IntersectionObserver not available, reveal all
-if(!('IntersectionObserver' in window)){
-  document.querySelectorAll('.work-card, .service-card, .step, .about-copy, .hero-copy').forEach(el=>el.classList.add('in-view'));
+} else {
+  // Fallback: show all elements immediately if IntersectionObserver not supported
+  document.querySelectorAll('.work-card, .service-card, .flow-card, .about-content, .hero-content').forEach(el => {
+    el.classList.add('in-view');
+  });
 }
+
+// ===== Close Mobile Menu on Scroll =====
+let lastScrollTop = 0;
+window.addEventListener('scroll', () => {
+  if (siteNav && siteNav.classList.contains('open')) {
+    const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+    if (scrollTop > lastScrollTop + 50) {
+      siteNav.classList.remove('open');
+      if (menuToggle) menuToggle.setAttribute('aria-expanded', 'false');
+    }
+  }
+  lastScrollTop = window.pageYOffset || document.documentElement.scrollTop;
+});
+

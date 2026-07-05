@@ -4,184 +4,239 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>SunnySideDesign — Design for your sunnydays!</title>
+  <meta name="description" content="SunnySideDesign — デザインで、あなたのビジネスに晴れやかな日を。グラフィック・Web・SNS・ブランディングの制作を行います。">
 
-  <!-- OGP & favicon -->
-  <link rel="icon" href="assets/images/favicon.png" type="image/png">
+  <!-- OGP -->
   <meta property="og:title" content="SunnySideDesign — Design for your sunnydays!">
   <meta property="og:description" content="デザインで、あなたのビジネスに晴れやかな日を。グラフィック・Web・SNS・ブランディングの制作を行います。">
   <meta property="og:image" content="assets/images/ogp.png">
+  <meta property="og:type" content="website">
+
+  <!-- favicon -->
+  <link rel="icon" href="assets/images/favicon.png" type="image/png">
 
   <!-- Google Fonts -->
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@600;700&family=Noto+Sans+JP:wght@400;500;700&family=Caveat:wght@400;700&display=swap" rel="stylesheet">
 
   <link rel="stylesheet" href="assets/css/style.css">
   <script defer src="assets/js/script.js"></script>
-  <meta name="description" content="SunnySideDesign — 晴れやかで信頼のあるデザインを提供します。">
-  <style>html{scroll-behavior:smooth}</style>
 </head>
 <body>
-  <header class="site-header" id="home" role="banner">
+  <header class="site-header">
     <div class="container header-inner">
-      <a href="#home" class="logo" aria-label="SunnySideDesign">
+      <a href="#home" class="site-logo" aria-label="SunnySideDesign">
         <img src="assets/images/logo.png" alt="SunnySideDesign logo">
       </a>
-      <button class="nav-toggle" aria-label="メニューを開く" aria-expanded="false" id="navToggle">
-        <span class="hamburger"></span>
-      </button>
-      <nav class="site-nav" aria-label="Primary" id="primaryNav">
-        <ul>
-          <li><a href="#home">HOME</a></li>
-          <li><a href="#about">ABOUT</a></li>
-          <li><a href="#service">SERVICE</a></li>
-          <li><a href="#works">WORKS</a></li>
-          <li><a href="#flow">FLOW</a></li>
-          <li><a href="#contact">CONTACT</a></li>
-        </ul>
+
+      <nav class="site-nav" aria-label="Main navigation">
+        <a href="#home">HOME</a>
+        <a href="#service">SERVICE</a>
+        <a href="#works">WORKS</a>
+        <a href="#about">ABOUT</a>
+        <a href="#flow">FLOW</a>
+        <a href="#contact">CONTACT</a>
       </nav>
+
       <div class="header-icons">
-        <a href="#" aria-label="Instagram" class="icon-link">●</a>
-        <a href="mailto:info@example.com" aria-label="Email" class="icon-link">✉</a>
+        <a href="#" aria-label="Instagram" class="icon-btn">●</a>
+        <a href="#contact" aria-label="Contact" class="icon-btn">✉</a>
       </div>
+
+      <button class="menu-toggle" aria-expanded="false" aria-label="Menu">
+        <span></span>
+        <span></span>
+      </button>
     </div>
   </header>
 
   <main>
-    <section id="home" class="hero section">
-      <div class="container hero-grid">
-        <div class="hero-copy">
-          <p class="eyebrow">デザインで、</p>
-          <h1>あなたのビジネスに晴れやかな日を。<br><span class="headline-en">Design for<br>your <em>sunnydays!</em></span></h1>
-          <p class="lead">グラフィックデザインとデジタルの力で、あなたの想いや魅力をカタチにし、あなたのビジネスや日常に、最高の輝きを届けます。</p>
-          <p><a class="btn btn-primary" href="#contact">お仕事のご依頼・ご相談はこちら</a></p>
+    <!-- ===== Hero ===== -->
+    <section id="home" class="hero">
+      <div class="container hero-inner">
+        <div class="hero-content">
+          <p class="hero-lead">デザインで、<br>あなたのビジネスに晴れやかな日を。</p>
+          <h1>Design for<br>your <span>sunnydays!</span></h1>
+          <p class="hero-text">
+            グラフィックデザインとデジタルの力で、<br>
+            あなたの想いや魅力をカタチにし、<br>
+            あなたのビジネスや日常に、最高の輝きを届けます。
+          </p>
+          <a href="#contact" class="primary-btn">お仕事のご依頼・ご相談はこちら <span>→</span></a>
         </div>
-        <div class="hero-media">
-          <!-- hero image: assets/images/hero.png に差し替え -->
-          <div class="hero-image" role="img" aria-label="Hero visual">
-            <img src="assets/images/hero.png" alt="朝日と海辺のビジュアル">
-            <div class="hero-decor sun"></div>
-            <div class="hero-decor waves"></div>
-            <div class="hero-decor dots"></div>
+
+        <div class="hero-visual">
+          <img src="assets/images/hero.png" alt="朝日と海辺のビジュアル">
+          <span class="sun-shape"></span>
+          <span class="blue-shape"></span>
+          <span class="dot-shape"></span>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== Service ===== -->
+    <section id="service" class="service">
+      <div class="container">
+        <div class="section-head">
+          <div>
+            <span class="section-script">Service</span>
+            <h2 class="section-title">サービス</h2>
+          </div>
+          <p class="section-desc">目的や想いに寄り添い、最適なデザインソリューションをご提供します。</p>
+        </div>
+
+        <div class="service-grid">
+          <article class="service-card">
+            <div class="service-icon">✏️</div>
+            <h3>グラフィックデザイン</h3>
+            <p>名刺・チラシ・パンフレット・ポスターなど各種印刷物のデザインを制作します。</p>
+          </article>
+          <article class="service-card">
+            <div class="service-icon">🖥️</div>
+            <h3>Webデザイン</h3>
+            <p>ホームページ・LP・バナーなど、目的に合わせたデザインで魅力を伝えます。</p>
+          </article>
+          <article class="service-card">
+            <div class="service-icon">📱</div>
+            <h3>SNS・デジタルデザイン</h3>
+            <p>Instagram投稿・ストーリーズ・サムネイルなど、SNSで映えるデザインを制作します。</p>
+          </article>
+          <article class="service-card">
+            <div class="service-icon">🔰</div>
+            <h3>ロゴ・ブランディング</h3>
+            <p>ロゴ制作からブランド設計まで、想いをカタチにするお手伝いをいたします。</p>
+          </article>
+          <article class="service-card">
+            <div class="service-icon">📊</div>
+            <h3>資料・スライドデザイン</h3>
+            <p>プレゼン資料や会社案内など、わかりやすく伝わる資料をデザインします。</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== Works ===== -->
+    <section id="works" class="works">
+      <div class="container">
+        <div class="works-head">
+          <div>
+            <span class="section-script">Works</span>
+            <h2 class="section-title">制作実績</h2>
+          </div>
+        </div>
+
+        <div class="works-grid">
+          <article class="work-card">
+            <div class="work-image">
+              <img src="assets/images/work-01.png" alt="名刺デザイン制作実績">
+            </div>
+            <div class="work-card-body">
+              <h3>名刺デザイン</h3>
+              <p># 飲食店</p>
+            </div>
+          </article>
+          <article class="work-card">
+            <div class="work-image">
+              <img src="assets/images/work-02.png" alt="ポスターデザイン制作実績">
+            </div>
+            <div class="work-card-body">
+              <h3>ポスターデザイン</h3>
+              <p># カフェ</p>
+            </div>
+          </article>
+          <article class="work-card">
+            <div class="work-image">
+              <img src="assets/images/work-03.png" alt="Webサイトデザイン制作実績">
+            </div>
+            <div class="work-card-body">
+              <h3>Webサイトデザイン</h3>
+              <p># サロン</p>
+            </div>
+          </article>
+          <article class="work-card">
+            <div class="work-image">
+              <img src="assets/images/work-04.png" alt="Instagram投稿デザイン制作実績">
+            </div>
+            <div class="work-card-body">
+              <h3>Instagram投稿デザイン</h3>
+              <p># SNSデザイン</p>
+            </div>
+          </article>
+          <article class="work-card">
+            <div class="work-image">
+              <img src="assets/images/work-05.png" alt="スライドデザイン制作実績">
+            </div>
+            <div class="work-card-body">
+              <h3>スライドデザイン</h3>
+              <p># 医療・プレゼン資料</p>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== About ===== -->
+    <section id="about" class="about">
+      <div class="container about-inner">
+        <div class="about-image image-frame">
+          <img src="assets/images/about.png" alt="プロフィール画像">
+        </div>
+        <div class="about-content">
+          <span class="section-script orange">About</span>
+          <h2>私について</h2>
+          <p>
+            SunnySideDesign（サニーサイドデザイン）は、「design for your sunnydays!」をコンセプトに、デザインとデジタルの力で、あなたのビジネスや日常に晴れやかさを届けるデザインスタジオです。
+          </p>
+          <a href="#contact" class="outline-btn">詳しく見る <span>→</span></a>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== Flow ===== -->
+    <section id="flow" class="flow">
+      <div class="container">
+        <div>
+          <span class="section-script">Flow</span>
+          <h2 class="section-title">制作の流れ</h2>
+        </div>
+
+        <div class="flow-grid">
+          <div class="flow-card">
+            <div class="flow-number">1</div>
+            <h3>お問い合わせ</h3>
+            <p>ご相談内容や制作したいものについてお聞かせください。</p>
+          </div>
+          <div class="flow-card">
+            <div class="flow-number">2</div>
+            <h3>ヒアリング</h3>
+            <p>目的・ターゲット・雰囲気・掲載内容などを丁寧に確認します。</p>
+          </div>
+          <div class="flow-card">
+            <div class="flow-number">3</div>
+            <h3>デザイン制作</h3>
+            <p>方向性に合わせて、伝わるデザインを制作します。</p>
+          </div>
+          <div class="flow-card">
+            <div class="flow-number">4</div>
+            <h3>修正・調整</h3>
+            <p>ご希望に合わせて、より良い形にブラッシュアップします。</p>
+          </div>
+          <div class="flow-card">
+            <div class="flow-number">5</div>
+            <h3>納品</h3>
+            <p>用途に合わせた形式でデータを納品します。</p>
           </div>
         </div>
       </div>
     </section>
 
-    <section id="service" class="service section">
-      <div class="container">
-        <header class="section-head">
-          <h2>Service<br><span class="jp">サービス</span></h2>
-          <p class="muted">目的や想いに寄り添い、最適なデザインソリューションをご提供します。</p>
-        </header>
-
-        <!-- service background: assets/images/service-bg.png に差し替え可能 -->
-        <div class="services-grid">
-          <article class="service-card">
-            <div class="icon">✏️</div>
-            <h3>グラフィックデザイン</h3>
-            <p>名刺・チラシ・パンフレット・ポスターなど各種印刷物を制作します。</p>
-          </article>
-          <article class="service-card">
-            <div class="icon">🖥️</div>
-            <h3>Webデザイン</h3>
-            <p>ホームページ・LP・バナーなど目的に合わせたデザインを制作します。</p>
-          </article>
-          <article class="service-card">
-            <div class="icon">📱</div>
-            <h3>SNS・デジタルデザイン</h3>
-            <p>Instagram投稿・ストーリーズなどSNSで映えるデザインを制作します。</p>
-          </article>
-          <article class="service-card">
-            <div class="icon">🔰</div>
-            <h3>ロゴ・ブランディング</h3>
-            <p>ロゴ制作からブランド設計まで、想いをカタチにします。</p>
-          </article>
-          <article class="service-card">
-            <div class="icon">📊</div>
-            <h3>資料・スライドデザイン</h3>
-            <p>プレゼン資料や会社案内など、わかりやすく伝わる資料を作ります。</p>
-          </article>
-        </div>
-      </div>
-    </section>
-
-    <section id="works" class="works section">
-      <div class="container">
-        <div class="section-head-row">
-          <header class="section-head">
-            <h2>Works<br><span class="jp">制作実績</span></h2>
-          </header>
-          <div class="all-works-link"><a href="#">すべての実績を見る →</a></div>
-        </div>
-
-        <div class="works-grid">
-          <article class="work-card">
-            <div class="work-thumb"><img src="assets/images/work-01.png" alt="名刺デザイン"></div>
-            <h3>名刺デザイン</h3>
-            <p class="tag"># 飲食店</p>
-          </article>
-          <article class="work-card">
-            <div class="work-thumb"><img src="assets/images/work-02.png" alt="ポスターデザイン"></div>
-            <h3>ポスターデザイン</h3>
-            <p class="tag"># カフェ</p>
-          </article>
-          <article class="work-card">
-            <div class="work-thumb"><img src="assets/images/work-03.png" alt="Webサイトデザイン"></div>
-            <h3>Webサイトデザイン</h3>
-            <p class="tag"># サロン</p>
-          </article>
-          <article class="work-card">
-            <div class="work-thumb"><img src="assets/images/work-04.png" alt="Instagram投稿デザイン"></div>
-            <h3>Instagram投稿デザイン</h3>
-            <p class="tag"># SNSデザイン</p>
-          </article>
-          <article class="work-card">
-            <div class="work-thumb"><img src="assets/images/work-05.png" alt="スライドデザイン"></div>
-            <h3>スライドデザイン</h3>
-            <p class="tag"># 医療・プレゼン資料</p>
-          </article>
-        </div>
-      </div>
-    </section>
-
-    <section id="about" class="about section">
-      <div class="container about-grid">
-        <div class="about-media">
-          <!-- about image: assets/images/about.png に差し替え -->
-          <div class="image-frame"><img src="assets/images/about.png" alt="プロフィール画像"></div>
-        </div>
-        <div class="about-copy">
-          <h2>About<br><span class="jp">私について</span></h2>
-          <p>SunnySideDesign（サニーサイドデザイン）は、「design for your sunnydays!」をコンセプトに、デザインとデジタルの力で、あなたのビジネスや日常に晴れやかさを届けるデザインスタジオです。グラフィックデザイン、Webデザイン、SNSクリエイティブ、資料制作などを通じて、想いや魅力が伝わるカタチを一緒に作ります。</p>
-          <p><a class="btn btn-outline" href="#">詳しく見る</a></p>
-        </div>
-      </div>
-    </section>
-
-    <section id="flow" class="flow section">
-      <div class="container">
-        <header class="section-head">
-          <h2>Flow<br><span class="jp">制作の流れ</span></h2>
-        </header>
-        <div class="flow-row">
-          <div class="step"><span class="num">1</span><h4>お問い合わせ</h4><p>ご相談内容や制作したいものについてお聞かせください。</p></div>
-          <div class="step"><span class="num">2</span><h4>ヒアリング</h4><p>目的・ターゲット・雰囲気などを丁寧に確認します。</p></div>
-          <div class="step"><span class="num">3</span><h4>デザイン制作</h4><p>方向性に合わせて、伝わるデザインを制作します。</p></div>
-          <div class="step"><span class="num">4</span><h4>修正・調整</h4><p>ご希望に合わせてブラッシュアップします。</p></div>
-          <div class="step"><span class="num">5</span><h4>納品</h4><p>用途に合わせた形式でデータを納品します。</p></div>
-        </div>
-      </div>
-    </section>
-
-    <section id="contact" class="cta section">
-      <!-- cta background: assets/images/cta-bg.png に差し替え可能 -->
+    <!-- ===== Contact CTA ===== -->
+    <section id="contact" class="contact-cta">
       <div class="container cta-inner">
-        <div class="cta-copy">
+        <div>
           <h2>お仕事のご依頼・ご相談はこちらから</h2>
-          <p class="muted">デザインに関するご相談やお見積りなど、お気軽にお問い合わせください。</p>
+          <p>デザインに関するご相談やお見積りなど、お気軽にお問い合わせください。</p>
         </div>
-        <div class="cta-action">
-          <a class="btn btn-ghost" href="#contact">お問い合わせフォームへ →</a>
-        </div>
+        <a href="#contact" class="cta-btn">お問い合わせフォームへ →</a>
       </div>
     </section>
   </main>
@@ -191,19 +246,17 @@
       <div class="footer-left">
         <img src="assets/images/logo.png" alt="SunnySideDesign">
       </div>
-      <div class="footer-center">
-        <nav aria-label="Footer" class="footer-nav">
-          <a href="#home">HOME</a>
-          <a href="#about">ABOUT</a>
-          <a href="#service">SERVICE</a>
-          <a href="#works">WORKS</a>
-          <a href="#flow">FLOW</a>
-          <a href="#contact">CONTACT</a>
-        </nav>
-      </div>
-      <div class="footer-right">
-        <a href="#" aria-label="Instagram" class="icon-link">●</a>
-        <a href="mailto:info@example.com" aria-label="Email" class="icon-link">✉</a>
+      <nav class="footer-nav">
+        <a href="#home">HOME</a>
+        <a href="#service">SERVICE</a>
+        <a href="#works">WORKS</a>
+        <a href="#about">ABOUT</a>
+        <a href="#flow">FLOW</a>
+        <a href="#contact">CONTACT</a>
+      </nav>
+      <div class="footer-icons">
+        <a href="#" aria-label="Instagram" class="icon-btn">●</a>
+        <a href="#contact" aria-label="Contact" class="icon-btn">✉</a>
       </div>
     </div>
     <div class="copyright">© SunnySideDesign All Rights Reserved.</div>
