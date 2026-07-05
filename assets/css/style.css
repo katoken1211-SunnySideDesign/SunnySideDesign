@@ -392,6 +392,10 @@ section {
   aspect-ratio: 4 / 3;
   overflow: hidden;
   background: linear-gradient(135deg, #fff7e8, #eaf8ff);
+  border: 0;
+  padding: 0;
+  cursor: pointer;
+  display: block;
 }
 
 .work-image img {
@@ -399,10 +403,100 @@ section {
   height: 100%;
   object-fit: cover;
   display: block;
+  transition: transform 0.3s ease;
+}
+
+.work-image:hover img,
+.work-image:focus-visible img {
+  transform: scale(1.04);
+}
+
+.work-image:focus-visible {
+  outline: 3px solid rgba(75, 179, 230, 0.4);
+  outline-offset: -3px;
 }
 
 .work-card-body {
   padding: 20px;
+}
+
+.image-modal {
+  position: fixed;
+  inset: 0;
+  z-index: 200;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.25s ease;
+}
+
+.image-modal.is-open {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.image-modal-backdrop {
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.8);
+  backdrop-filter: blur(4px);
+}
+
+.image-modal-dialog {
+  position: relative;
+  max-width: min(92vw, 960px);
+  max-height: min(90vh, 900px);
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1;
+}
+
+.image-modal-dialog img {
+  width: 100%;
+  max-height: min(80vh, 820px);
+  object-fit: contain;
+  border-radius: 20px;
+  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.35);
+  background: #fff;
+}
+
+.image-modal-close {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  width: 44px;
+  height: 44px;
+  border: 0;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.95);
+  color: var(--color-text);
+  font-size: 24px;
+  line-height: 1;
+  cursor: pointer;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.18);
+}
+
+body.modal-open {
+  overflow: hidden;
+}
+
+@media (max-width: 640px) {
+  .work-card {
+    flex-basis: calc(80vw - 16px);
+  }
+
+  .image-modal {
+    padding: 16px;
+  }
+
+  .image-modal-dialog img {
+    max-height: 78vh;
+  }
 }
 
 .work-card h3 {

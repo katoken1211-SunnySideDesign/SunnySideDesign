@@ -20,15 +20,24 @@ document.querySelectorAll('.site-nav a').forEach(link => {
   });
 });
 
-// ===== Smooth Scroll for Anchor Links =====
+// ===== Smooth Scroll for Anchor Links (offset for fixed header) =====
+const headerEl = document.querySelector('.site-header');
 document.querySelectorAll('a[href^="#"]').forEach(link => {
   link.addEventListener('click', (e) => {
     const href = link.getAttribute('href');
-    if (href.length > 1) {
+    if (href && href.length > 1) {
       const el = document.querySelector(href);
       if (el) {
         e.preventDefault();
-        el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        const headerHeight = headerEl ? headerEl.offsetHeight : 0;
+        const top = el.getBoundingClientRect().top + window.pageYOffset - headerHeight;
+        window.scrollTo({ top, behavior: 'smooth' });
+
+        // Close mobile menu if open
+        if (siteNav && siteNav.classList.contains('open')) {
+          siteNav.classList.remove('open');
+          if (menuToggle) menuToggle.setAttribute('aria-expanded', 'false');
+        }
       }
     }
   });
@@ -67,5 +76,43 @@ window.addEventListener('scroll', () => {
     }
   }
   lastScrollTop = window.pageYOffset || document.documentElement.scrollTop;
+});
+
+// ===== Work Image Lightbox =====
+const imageModal = document.querySelector('#image-modal');
+const imageModalImg = imageModal?.querySelector('img');
+const workImageButtons = document.querySelectorAll('.work-image');
+
+const openImageModal = (button) => {
+  const img = button.querySelector('img');
+  if (!imageModal || !imageModalImg || !img) return;
+
+  imageModalImg.src = img.src;
+  imageModalImg.alt = img.alt;
+  imageModal.classList.add('is-open');
+  imageModal.setAttribute('aria-hidden', 'false');
+  document.body.classList.add('modal-open');
+};
+
+const closeImageModal = () => {
+  if (!imageModal) return;
+
+  imageModal.classList.remove('is-open');
+  imageModal.setAttribute('aria-hidden', 'true');
+  document.body.classList.remove('modal-open');
+};
+
+workImageButtons.forEach((button) => {
+  button.addEventListener('click', () => openImageModal(button));
+});
+
+document.querySelectorAll('[data-close-modal]').forEach((element) => {
+  element.addEventListener('click', closeImageModal);
+});
+
+document.addEventListener('keydown', (event) => {
+  if (event.key === 'Escape' && imageModal?.classList.contains('is-open')) {
+    closeImageModal();
+  }
 });
 
