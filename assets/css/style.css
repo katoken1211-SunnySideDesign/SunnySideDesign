@@ -364,12 +364,17 @@ section {
 }
 
 .works-grid {
-  display: grid;
-  grid-template-columns: repeat(5, 1fr);
+  display: flex;
   gap: 24px;
+  overflow-x: auto;
+  scroll-behavior: smooth;
+  padding-bottom: 12px;
+  -webkit-overflow-scrolling: touch;
 }
 
 .work-card {
+  flex: 0 0 calc(33.333% - 16px);
+  min-width: 0;
   background: #fff;
   border-radius: var(--radius-medium);
   overflow: hidden;
@@ -671,7 +676,6 @@ section {
     border-right: none;
   }
 
-  .works-grid,
   .flow-grid {
     grid-template-columns: repeat(2, 1fr);
     gap: 20px;
@@ -756,10 +760,6 @@ section {
     align-items: flex-start;
     gap: 12px;
     margin-bottom: 32px;
-  }
-
-  .works-grid {
-    grid-template-columns: repeat(2, 1fr);
   }
 
   .work-card h3 {
@@ -855,7 +855,6 @@ section {
   }
 
   .service-grid,
-  .works-grid,
   .flow-grid {
     grid-template-columns: 1fr !important;
   }
