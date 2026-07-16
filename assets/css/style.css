@@ -322,19 +322,58 @@ section {
 }
 
 .service-icon {
+  position: relative;
   width: 80px;
   height: 80px;
   margin: 0 auto 24px;
-  border-radius: 50%;
+  border: 1px solid rgba(246, 145, 47, 0.16);
+  border-radius: 24px;
   display: grid;
   place-items: center;
-  color: #fff;
-  font-size: 34px;
-  background: linear-gradient(135deg, var(--color-orange), var(--color-yellow));
+  color: var(--color-orange);
+  background: linear-gradient(145deg, #fffdf9 10%, #fff0dc 100%);
+  box-shadow: 0 12px 24px rgba(224, 111, 29, 0.12), inset 0 1px 0 #fff;
+  transform: rotate(-3deg);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.service-icon::after {
+  content: "";
+  position: absolute;
+  top: 9px;
+  right: 9px;
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--color-yellow);
+  box-shadow: 0 0 0 4px rgba(255, 200, 56, 0.15);
+}
+
+.service-icon svg {
+  width: 46px;
+  height: 46px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.8;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.service-card:hover .service-icon {
+  transform: translateY(-4px) rotate(0deg);
+  box-shadow: 0 16px 28px rgba(224, 111, 29, 0.17), inset 0 1px 0 #fff;
 }
 
 .service-card:nth-child(3) .service-icon {
-  background: linear-gradient(135deg, var(--color-blue), #2f8fd4);
+  color: var(--color-blue);
+  border-color: rgba(31, 111, 166, 0.16);
+  background: linear-gradient(145deg, #fbfeff 10%, #e5f5ff 100%);
+  box-shadow: 0 12px 24px rgba(31, 111, 166, 0.13), inset 0 1px 0 #fff;
+}
+
+.service-card:nth-child(3) .service-icon::after {
+  background: #55b8e8;
+  box-shadow: 0 0 0 4px rgba(85, 184, 232, 0.15);
 }
 
 .service-card h3 {
@@ -846,7 +885,19 @@ body.modal-open {
   .service-icon {
     width: 64px;
     height: 64px;
-    font-size: 28px;
+    border-radius: 19px;
+  }
+
+  .service-icon svg {
+    width: 38px;
+    height: 38px;
+  }
+
+  .service-icon::after {
+    top: 7px;
+    right: 7px;
+    width: 6px;
+    height: 6px;
   }
 
   .works-head {
@@ -986,4 +1037,3 @@ body.modal-open {
     font-size: 14px;
   }
 }
-
