@@ -390,6 +390,102 @@ section {
   margin: 0;
 }
 
+.sunnylife-link {
+  position: relative;
+  isolation: isolate;
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  align-items: center;
+  gap: 24px;
+  margin-top: 28px;
+  padding: 24px 28px;
+  overflow: hidden;
+  border: 1px solid rgba(246, 145, 47, 0.18);
+  border-radius: 22px;
+  color: var(--color-text);
+  text-decoration: none;
+  background: linear-gradient(110deg, #fff8ed 0%, #fffdf8 58%, #edf8ff 100%);
+  box-shadow: 0 12px 30px rgba(91, 64, 38, 0.08);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.sunnylife-link::before {
+  content: "";
+  position: absolute;
+  z-index: -1;
+  width: 170px;
+  height: 170px;
+  top: -105px;
+  right: 16%;
+  border-radius: 50%;
+  background: rgba(255, 197, 55, 0.14);
+}
+
+.sunnylife-link:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 18px 38px rgba(91, 64, 38, 0.13);
+}
+
+.sunnylife-mark {
+  width: 64px;
+  height: 64px;
+  display: grid;
+  place-items: center;
+  border-radius: 19px;
+  color: #fff;
+  background: linear-gradient(145deg, var(--color-orange), var(--color-yellow));
+  box-shadow: 0 10px 22px rgba(224, 111, 29, 0.2);
+}
+
+.sunnylife-mark svg {
+  width: 36px;
+  height: 36px;
+}
+
+.sunnylife-copy {
+  display: grid;
+  gap: 3px;
+}
+
+.sunnylife-copy .sunnylife-label {
+  color: var(--color-orange);
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+}
+
+.sunnylife-copy strong {
+  font-size: 20px;
+  line-height: 1.4;
+}
+
+.sunnylife-copy > span:last-child {
+  color: var(--color-muted);
+  font-size: 13px;
+}
+
+.sunnylife-action {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 12px 18px;
+  border-radius: 999px;
+  color: #fff;
+  font-size: 13px;
+  font-weight: 700;
+  white-space: nowrap;
+  background: var(--color-blue);
+}
+
+.sunnylife-action span {
+  font-size: 16px;
+  transition: transform 0.3s ease;
+}
+
+.sunnylife-link:hover .sunnylife-action span {
+  transform: translate(2px, -2px);
+}
+
 /* ===== Works ===== */
 .works {
   background: #ffffff;
@@ -898,6 +994,28 @@ body.modal-open {
     right: 7px;
     width: 6px;
     height: 6px;
+  }
+
+  .sunnylife-link {
+    grid-template-columns: auto 1fr;
+    gap: 16px;
+    padding: 20px;
+  }
+
+  .sunnylife-mark {
+    width: 54px;
+    height: 54px;
+    border-radius: 16px;
+  }
+
+  .sunnylife-mark svg {
+    width: 31px;
+    height: 31px;
+  }
+
+  .sunnylife-action {
+    grid-column: 1 / -1;
+    justify-content: center;
   }
 
   .works-head {
