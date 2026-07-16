@@ -94,24 +94,50 @@ a {
 
 .header-icons {
   display: flex;
-  gap: 12px;
+  gap: 10px;
 }
 
-.icon-btn {
+.social-btn {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: 40px;
-  height: 40px;
-  border-radius: 50%;
-  background: linear-gradient(135deg, rgba(242, 106, 33, 0.1), rgba(75, 179, 230, 0.1));
-  border: 1px solid rgba(0, 0, 0, 0.06);
-  font-size: 14px;
-  transition: all 0.3s ease;
+  color: #fff;
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
 }
 
-.icon-btn:hover {
-  background: linear-gradient(135deg, rgba(242, 106, 33, 0.2), rgba(75, 179, 230, 0.2));
+.social-btn svg {
+  width: 22px;
+  height: 22px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.8;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.social-btn:hover {
+  color: #fff;
+  transform: translateY(-3px);
+}
+
+.social-btn-instagram {
+  background: linear-gradient(135deg, #833ab4 0%, #fd1d1d 55%, #fcb045 100%);
+  box-shadow: 0 8px 20px rgba(193, 53, 132, 0.24);
+}
+
+.social-btn-contact {
+  background: linear-gradient(135deg, var(--color-orange), #ff9b3d);
+  box-shadow: 0 8px 20px rgba(242, 106, 33, 0.24);
+}
+
+.social-btn-compact {
+  width: 44px;
+  height: 44px;
+  border-radius: 14px;
+}
+
+.social-btn-compact:hover {
+  box-shadow: 0 12px 24px rgba(43, 43, 43, 0.2);
 }
 
 .menu-toggle {
@@ -858,7 +884,45 @@ body.modal-open {
 
 .footer-icons {
   display: flex;
+  gap: 14px;
+}
+
+.social-btn-wide {
+  justify-content: flex-start;
   gap: 12px;
+  min-width: 190px;
+  padding: 12px 16px;
+  border-radius: 16px;
+}
+
+.social-btn-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex: 0 0 40px;
+  width: 40px;
+  height: 40px;
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.2);
+}
+
+.social-btn-wide strong,
+.social-btn-wide small {
+  display: block;
+  line-height: 1.35;
+}
+
+.social-btn-wide strong {
+  font-family: "Poppins", sans-serif;
+  font-size: 15px;
+  letter-spacing: 0.02em;
+}
+
+.social-btn-wide small {
+  margin-top: 2px;
+  font-size: 10px;
+  white-space: nowrap;
+  opacity: 0.9;
 }
 
 .copyright {
@@ -1091,10 +1155,36 @@ body.modal-open {
   .footer-icons {
     order: 3;
     width: 100%;
+    flex-wrap: wrap;
+  }
+
+  .social-btn-wide {
+    flex: 1 1 220px;
   }
 }
 
 @media (max-width: 640px) {
+  .header-icons {
+    margin-left: auto;
+    margin-right: 8px;
+    gap: 7px;
+  }
+
+  .social-btn-compact {
+    width: 38px;
+    height: 38px;
+    border-radius: 12px;
+  }
+
+  .social-btn-compact svg {
+    width: 19px;
+    height: 19px;
+  }
+
+  .social-btn-wide {
+    flex-basis: 100%;
+  }
+
   .section-script {
     font-size: 42px;
   }
