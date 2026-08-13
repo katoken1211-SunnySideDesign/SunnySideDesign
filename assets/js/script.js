@@ -116,3 +116,33 @@ document.addEventListener('keydown', (event) => {
   }
 });
 
+// ===== Journal category filter (progressive enhancement) =====
+const journalGrid = document.querySelector('#latest-title')?.closest('.journal-section')?.querySelector('.journal-grid');
+if (journalGrid) {
+  const categoryAliases = {
+    ai: 'AI活用',
+    design: 'デザイン',
+    web: 'Web制作',
+    work: '働き方・思考',
+    life: '暮らし'
+  };
+  const requested = new URLSearchParams(window.location.search).get('category');
+  const category = categoryAliases[requested] || requested;
+
+  if (category) {
+    let visibleCount = 0;
+    journalGrid.querySelectorAll('.journal-card').forEach((card) => {
+      const visible = card.dataset.category === category;
+      card.hidden = !visible;
+      if (visible) visibleCount += 1;
+    });
+
+    const status = document.createElement('p');
+    status.className = 'journal-filter-status';
+    status.setAttribute('role', 'status');
+    status.textContent = visibleCount
+      ? `「${category}」の記事を${visibleCount}件表示しています。`
+      : `「${category}」の記事はまだありません。`;
+    journalGrid.before(status);
+  }
+}
