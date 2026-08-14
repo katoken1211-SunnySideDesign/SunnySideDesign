@@ -20,4 +20,11 @@ slug: "example-slug"
 ---
 ```
 
-カテゴリは `AI活用`、`デザイン`、`Web制作`、`働き方・思考`、`暮らし` のいずれかです。公開するときは `draft: false` にします。画像は `assets/images/journal/` に配置し、WebPまたはAVIFを推奨します。
+カテゴリは `AI活用`、`デザイン`、`Web制作`、`働き方・思考`、`暮らし` のいずれかです。公開するときは `draft: false` にします。
+
+画像は用途に応じて次の場所へ配置します。WebPまたはAVIFを推奨します。
+
+- 記事で使用する画像: `assets/images/journal/`
+- 今後の記事で使う画像ストック: `assets/images/journal/stock/`
+
+ストック画像を記事で使用するときは、内容が分かるファイル名に変更して `assets/images/journal/` へ移し、Front Matterの `image` または本文のMarkdown画像記法で指定します。
