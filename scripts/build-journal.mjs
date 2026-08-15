@@ -90,7 +90,7 @@ const published = posts.filter((post) => !post.draft);
 for (const post of posts) {
   const output = path.join(root, "journal", post.slug);
   const related = published.filter((x) => x.slug !== post.slug && x.category === post.category).slice(0, 3);
-  const html = page(post, related).replace("journal.css?v=20260813", "journal.css?v=20260815");
+  const html = page(post, related).replace("journal.css?v=20260813", "journal.css?v=20260816");
   await fs.mkdir(output, { recursive: true });
   await fs.writeFile(path.join(output, "index.html"), html);
 }
