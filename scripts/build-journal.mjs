@@ -87,7 +87,13 @@ const posts = await Promise.all(files.map(async (file) => parsePost(file, await 
 const slugs = new Set(); for (const post of posts) { if (slugs.has(post.slug)) throw new Error(`slugが重複しています: ${post.slug}`); slugs.add(post.slug); }
 posts.sort((a, b) => b.date.localeCompare(a.date));
 const published = posts.filter((post) => !post.draft);
-for (const post of posts) { const output = path.join(root, "journal", post.slug); await fs.mkdir(output, { recursive: true }); await fs.writeFile(path.join(output, "index.html"), page(post, published.filter((x) => x.slug !== post.slug && x.category === post.category).slice(0, 3))); }
+for (const post of posts) {
+  const output = path.join(root, "journal", post.slug);
+  const related = published.filter((x) => x.slug !== post.slug && x.category === post.category).slice(0, 3);
+  const html = page(post, related).replace("journal.css?v=20260813", "journal.css?v=20260815");
+  await fs.mkdir(output, { recursive: true });
+  await fs.writeFile(path.join(output, "index.html"), html);
+}
 
 let journalIndex = await fs.readFile(path.join(root, "journal/index.html"), "utf8");
 journalIndex = replaceBlock(journalIndex, "JOURNAL_FEATURED", published.filter((x) => x.featured).slice(0, 3).length ? `<div class="journal-grid">${published.filter((x) => x.featured).slice(0, 3).map(card).join("")}</div>` : '<div class="journal-empty"><div><strong>おすすめ記事を準備しています</strong><p>公開後、特に読んでいただきたい記事をここでご紹介します。</p></div></div>');
