@@ -24,7 +24,7 @@
   <!-- Google Fonts -->
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@600;700&family=Noto+Sans+JP:wght@400;500;700&family=Caveat:wght@400;700&display=swap" rel="stylesheet">
 
-  <link rel="stylesheet" href="assets/css/style.css?v=20260817-1">
+  <link rel="stylesheet" href="assets/css/style.css?v=20260817-2">
   <link rel="stylesheet" href="assets/css/journal.css?v=20260816">
   <script defer src="assets/js/script.js?v=20260706"></script>
 </head>
@@ -265,18 +265,36 @@
     </section>
 
     <!-- ===== About ===== -->
-    <section id="about" class="about">
+    <section id="about" class="about" aria-labelledby="about-title">
       <div class="container about-inner">
+        <div class="about-heading">
+          <span class="section-script orange">About</span>
+          <h2 id="about-title">私について</h2>
+        </div>
         <div class="about-image image-frame">
-          <img src="assets/images/about-new.png" alt="プロフィール画像">
+          <img src="assets/images/about-new.png" alt="SunnySideDesignを運営するkatokenのプロフィール写真">
         </div>
         <div class="about-content">
-          <span class="section-script orange">About</span>
-          <h2>私について</h2>
-          <p>
-            SunnySideDesign（サニーサイドデザイン）は、「design for your sunnydays!」をコンセプトに、デザインとデジタルの力で、あなたのビジネスや日常に晴れやかさを届けるデザインスタジオです。
-          </p>
-          <a href="https://my.prairie.cards/u/katoken" target="_blank" rel="noopener noreferrer" class="outline-btn">詳しく見る <span>→</span></a>
+          <div class="about-profile">
+            <p class="about-name">katoken</p>
+            <p class="about-role">Designer / Digital Creator</p>
+          </div>
+          <div class="about-copy">
+            <p>群馬を拠点に、SunnySideDesignとして<br class="about-pc-break">グラフィックデザインやWeb制作、デジタル活用のサポートをしています。</p>
+            <p>もともと「つくること」が好きで、デザインを独学で学びながら、Web制作やAIなどにも活動の幅を広げてきました。</p>
+            <p>私が大切にしているのは、ただ見た目をきれいにすることではなく、</p>
+            <p class="about-message">「その人が何を伝えたいのか」を一緒に考え、カタチにすること。</p>
+            <p>名刺やポスター、Webサイト、SNSなど、つくるものは違っても、その奥にある想いやストーリーを聞くところからデザインを始めています。</p>
+            <p>また、AIやデジタルツールを日々試しながら、仕事だけでなく、子育てや暮らしの中でも「どうすればもっと便利に、楽しくできるか」を考えるのが好きです。</p>
+            <p>そんな実体験や考えたことを、<strong>Sunny Side Journal</strong>でも発信しています。</p>
+          </div>
+          <ul class="about-tags" aria-label="活動分野">
+            <li>Graphic Design</li>
+            <li>Web Design</li>
+            <li>AI / Digital</li>
+            <li>G検定</li>
+          </ul>
+          <a href="/journal/" class="outline-btn about-journal-link">Sunny Side Journalを読む <span aria-hidden="true">→</span></a>
         </div>
       </div>
     </section>
