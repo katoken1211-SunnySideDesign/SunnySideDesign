@@ -1,3 +1,18 @@
+// ===== Google Analytics 4 =====
+// Loading the Google tag and calling config sends the default page_view event.
+const GA4_MEASUREMENT_ID = 'G-TG4L7GKQLL';
+window.dataLayer = window.dataLayer || [];
+function gtag() {
+  window.dataLayer.push(arguments);
+}
+gtag('js', new Date());
+gtag('config', GA4_MEASUREMENT_ID);
+
+const googleTag = document.createElement('script');
+googleTag.async = true;
+googleTag.src = `https://www.googletagmanager.com/gtag/js?id=${GA4_MEASUREMENT_ID}`;
+document.head.appendChild(googleTag);
+
 // ===== Mobile Menu Toggle =====
 const menuToggle = document.querySelector('.menu-toggle');
 const siteNav = document.querySelector('.site-nav');
