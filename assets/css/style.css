@@ -1139,9 +1139,62 @@ body.modal-open {
   .home-journal-head {
     grid-template-columns: 1fr;
     gap: 14px;
+    margin-bottom: 24px;
   }
 
   .home-journal-empty { padding: 22px; align-items: flex-start; }
+
+  .home-journal .journal-grid {
+    gap: 14px;
+  }
+
+  .home-journal .journal-card {
+    border-radius: 16px;
+  }
+
+  .home-journal .journal-card a {
+    display: grid;
+    grid-template-columns: 112px minmax(0, 1fr);
+    align-items: stretch;
+  }
+
+  .home-journal .journal-card-image {
+    width: 112px;
+    height: 100%;
+    min-height: 124px;
+    aspect-ratio: auto;
+    object-fit: cover;
+  }
+
+  .home-journal .journal-card-body {
+    min-width: 0;
+    padding: 14px 14px 13px;
+  }
+
+  .home-journal .journal-meta {
+    gap: 7px;
+    margin-bottom: 7px;
+    font-size: 11px;
+  }
+
+  .home-journal .journal-category {
+    padding: 3px 8px;
+    font-size: 10px;
+  }
+
+  .home-journal .journal-card h3 {
+    display: -webkit-box;
+    overflow: hidden;
+    margin: 0;
+    font-size: 15px;
+    line-height: 1.55;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 3;
+  }
+
+  .home-journal .journal-card p {
+    display: none;
+  }
 
   .work-card h3 {
     font-size: 15px;
@@ -1218,6 +1271,19 @@ body.modal-open {
 }
 
 @media (max-width: 640px) {
+  .home-journal {
+    padding: 52px 0;
+  }
+
+  .home-journal .journal-card a {
+    grid-template-columns: 104px minmax(0, 1fr);
+  }
+
+  .home-journal .journal-card-image {
+    width: 104px;
+    min-height: 116px;
+  }
+
   .header-icons {
     margin-left: auto;
     margin-right: 8px;
