@@ -904,31 +904,66 @@ body.modal-open {
   margin: 0;
 }
 
-/* ===== Contact CTA ===== */
+/* ===== Contact ===== */
 .contact-cta {
-  padding: 56px 0;
+  padding: 96px 0;
   background: linear-gradient(100deg, #f26a21 0%, #ffd21f 45%, #4bb3e6 100%);
+}
+
+.contact-inner {
+  max-width: 960px;
+}
+
+.contact-heading {
+  margin-bottom: 40px;
+  color: #fff;
+  text-align: center;
+}
+
+.contact-heading .section-script {
   color: #fff;
 }
 
-.cta-inner {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  gap: 48px;
-}
-
-.cta-inner h2 {
-  font-family: "Poppins", sans-serif;
-  font-size: 28px;
+.contact-heading h2 {
+  font-size: clamp(26px, 4vw, 38px);
   font-weight: 700;
-  margin: 0 0 12px;
+  margin: 4px 0 16px;
 }
 
-.cta-inner p {
+.contact-heading p {
   margin: 0;
-  font-size: 15px;
-  opacity: 0.95;
+  font-size: 16px;
+  line-height: 1.9;
+}
+
+.contact-form-wrap {
+  width: 100%;
+  padding: 32px;
+  overflow: hidden;
+  border-radius: var(--radius-large);
+  background: var(--color-white);
+  box-shadow: var(--shadow-soft);
+}
+
+.contact-form {
+  display: block;
+  width: 100%;
+  max-width: 100%;
+  height: 1200px;
+  border: 0;
+}
+
+.contact-fallback {
+  margin: 16px 0 0;
+  color: var(--color-muted);
+  font-size: 13px;
+  text-align: center;
+}
+
+.contact-fallback a {
+  color: var(--color-orange);
+  text-decoration: underline;
+  text-underline-offset: 3px;
 }
 
 .cta-btn {
@@ -937,13 +972,13 @@ body.modal-open {
   justify-content: center;
   min-width: 240px;
   padding: 18px 32px;
+  border: 1px solid rgba(255, 255, 255, 0.4);
   border-radius: 999px;
   background: rgba(255, 255, 255, 0.28);
   color: #fff;
   font-weight: 700;
   text-decoration: none;
   backdrop-filter: blur(8px);
-  border: 1px solid rgba(255, 255, 255, 0.4);
   transition: all 0.3s ease;
 }
 
@@ -1337,19 +1372,13 @@ body.modal-open {
     font-size: 16px;
   }
 
-  .cta-inner {
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 24px;
-  }
+  .contact-cta { padding: 72px 0; }
 
-  .cta-inner h2 {
-    font-size: 22px;
-  }
+  .contact-form-wrap { padding: 24px; }
 
   .cta-btn {
-    min-width: 100%;
     width: 100%;
+    min-width: 100%;
   }
 
   .footer-inner {
@@ -1493,15 +1522,20 @@ body.modal-open {
     font-size: 13px;
   }
 
-  .cta-inner h2 {
-    font-size: 20px;
-  }
-
-  .cta-inner p {
+  .contact-heading p {
     font-size: 14px;
   }
 
-  .cta-btn {
-    font-size: 14px;
+  .contact-cta { padding: 56px 0; }
+
+  .contact-heading { margin-bottom: 28px; }
+
+  .contact-form-wrap {
+    padding: 12px;
+    border-radius: 20px;
   }
+
+  .contact-form { height: 1350px; }
+
+  .cta-btn { font-size: 14px; }
 }
