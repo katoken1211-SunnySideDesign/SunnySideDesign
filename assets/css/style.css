@@ -915,7 +915,7 @@ body.modal-open {
 }
 
 .contact-heading {
-  margin-bottom: 40px;
+  margin-bottom: 32px;
   color: #fff;
   text-align: center;
 }
@@ -936,34 +936,27 @@ body.modal-open {
   line-height: 1.9;
 }
 
-.contact-form-wrap {
-  width: 100%;
-  padding: 32px;
-  overflow: hidden;
-  border-radius: var(--radius-large);
-  background: var(--color-white);
-  box-shadow: var(--shadow-soft);
-}
-
-.contact-form {
-  display: block;
-  width: 100%;
-  max-width: 100%;
-  height: 1200px;
-  border: 0;
-}
-
-.contact-fallback {
-  margin: 16px 0 0;
-  color: var(--color-muted);
-  font-size: 13px;
+.contact-action {
+  width: min(100%, 320px);
+  margin: 0 auto;
   text-align: center;
 }
 
-.contact-fallback a {
+.contact-action .cta-btn {
+  width: 100%;
+  background: rgba(255, 255, 255, 0.92);
   color: var(--color-orange);
-  text-decoration: underline;
-  text-underline-offset: 3px;
+  box-shadow: 0 12px 30px rgba(85, 66, 23, 0.16);
+}
+
+.contact-action .cta-btn:hover {
+  background: #fff;
+}
+
+.contact-note {
+  margin: 12px 0 0;
+  color: rgba(255, 255, 255, 0.92);
+  font-size: 12px;
 }
 
 .cta-btn {
@@ -1374,8 +1367,6 @@ body.modal-open {
 
   .contact-cta { padding: 72px 0; }
 
-  .contact-form-wrap { padding: 24px; }
-
   .cta-btn {
     width: 100%;
     min-width: 100%;
@@ -1528,14 +1519,7 @@ body.modal-open {
 
   .contact-cta { padding: 56px 0; }
 
-  .contact-heading { margin-bottom: 28px; }
-
-  .contact-form-wrap {
-    padding: 12px;
-    border-radius: 20px;
-  }
-
-  .contact-form { height: 1350px; }
+  .contact-heading { margin-bottom: 24px; }
 
   .cta-btn { font-size: 14px; }
 }
