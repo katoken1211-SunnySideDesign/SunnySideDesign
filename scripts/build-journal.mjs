@@ -91,7 +91,7 @@ for (const post of posts) {
   const output = path.join(root, "journal", post.slug);
   const related = published.filter((x) => x.slug !== post.slug && x.category === post.category).slice(0, 3);
   const html = page(post, related)
-    .replace("journal.css?v=20260813", "journal.css?v=20260816")
+    .replace("journal.css?v=20260813", "journal.css?v=20260823")
     .replace('</head>', '<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2801111628934180" crossorigin="anonymous"></script></head>')
     .replace('<a href="/#about">ABOUT</a></nav>', '<a href="/#about">ABOUT</a><a href="/privacy/">PRIVACY POLICY</a></nav>');
   await fs.mkdir(output, { recursive: true });
