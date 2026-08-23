@@ -966,6 +966,56 @@ body.modal-open {
   font-size: 12px;
 }
 
+.contact-divider {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin: 24px 0 16px;
+  color: rgba(255, 255, 255, 0.9);
+  font-size: 12px;
+}
+
+.contact-divider::before,
+.contact-divider::after {
+  content: "";
+  flex: 1;
+  height: 1px;
+  background: rgba(255, 255, 255, 0.48);
+}
+
+.line-contact-label {
+  margin: 0 0 10px;
+  color: #fff;
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.line-friend-banner {
+  display: inline-flex;
+  padding: 8px;
+  border-radius: 8px;
+  background: #fff;
+  box-shadow: 0 10px 24px rgba(85, 66, 23, 0.14);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.line-friend-banner:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 14px 28px rgba(85, 66, 23, 0.2);
+}
+
+.line-friend-banner:focus-visible {
+  outline: 3px solid #fff;
+  outline-offset: 4px;
+}
+
+.line-friend-banner img {
+  display: block;
+  width: 232px;
+  max-width: 100%;
+  height: auto;
+}
+
 .cta-btn {
   display: inline-flex;
   align-items: center;
