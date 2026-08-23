@@ -1048,9 +1048,7 @@ body.modal-open {
 
 .line-friend-banner {
   display: inline-flex;
-  padding: 8px;
-  border-radius: 8px;
-  background: #fff;
+  border-radius: 28px;
   box-shadow: 0 10px 24px rgba(85, 66, 23, 0.14);
   transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
@@ -1067,7 +1065,7 @@ body.modal-open {
 
 .line-friend-banner img {
   display: block;
-  width: 232px;
+  width: 360px;
   max-width: 100%;
   height: auto;
 }
