@@ -182,3 +182,5 @@
   .author-panel img { width: 60px; height: 60px; }
   .author-panel p:last-child { grid-column: 1 / -1; }
 }
+.article-service-links{margin:48px 0;padding:28px;border-radius:22px;background:linear-gradient(115deg,#fffaf2,#eef9ff)}
+.article-service-links h2{margin:4px 0 0;font-size:24px}

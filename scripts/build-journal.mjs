@@ -67,6 +67,7 @@ function markdown(source) {
 
 const dateJa = (date) => new Intl.DateTimeFormat("ja-JP", { year: "numeric", month: "long", day: "numeric", timeZone: "Asia/Tokyo" }).format(new Date(`${date}T00:00:00+09:00`));
 const card = (post) => `<article class="journal-card" data-category="${escapeHtml(post.category)}"><a href="/journal/${post.slug}/">${post.image ? `<img class="journal-card-image" src="${escapeHtml(post.image)}" alt="" width="640" height="360" loading="lazy">` : '<span class="journal-card-image"></span>'}<div class="journal-card-body"><div class="journal-meta"><span class="journal-category">${escapeHtml(post.category)}</span><time datetime="${post.date}">${dateJa(post.date)}</time></div><h3>${escapeHtml(post.title)}</h3><p>${escapeHtml(post.excerpt)}</p></div></a></article>`;
+const serviceLinks = `<aside class="article-service-links" aria-labelledby="related-service-title"><span class="journal-eyebrow">Related Service</span><h2 id="related-service-title">記事を読んだあとに</h2><div class="related-paths"><a href="/web-design/"><small>関連サービス</small>ホームページ制作について見る →</a><a href="/#works"><small>Related Works</small>制作実績を見る →</a></div></aside>`;
 
 function page(post, related) {
   const url = `${baseUrl}/journal/${post.slug}/`, image = post.image ? new URL(post.image, baseUrl).href : `${baseUrl}/assets/images/new-ogp.png`;
@@ -91,6 +92,8 @@ for (const post of posts) {
   const output = path.join(root, "journal", post.slug);
   const related = published.filter((x) => x.slug !== post.slug && x.category === post.category).slice(0, 3);
   const html = page(post, related)
+    .replace('<div class="article-after">', `<div class="article-after">${serviceLinks}`)
+    .replace('<link rel="stylesheet" href="/assets/css/journal.css?v=20260813">', '<link rel="stylesheet" href="/assets/css/journal.css?v=20260813"><link rel="stylesheet" href="/assets/css/pages.css?v=20260823">')
     .replace("journal.css?v=20260813", "journal.css?v=20260823")
     .replace('</head>', '<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2801111628934180" crossorigin="anonymous"></script></head>')
     .replace('<a href="/#about">ABOUT</a></nav>', '<a href="/#about">ABOUT</a><a href="/privacy/">PRIVACY POLICY</a></nav>');
@@ -110,7 +113,7 @@ await fs.writeFile(path.join(root, "index.html"), home);
 const sitemap = `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n  <url><loc>${baseUrl}/</loc></url>\n  <url><loc>${baseUrl}/journal/</loc><lastmod>${new Date().toISOString().slice(0, 10)}</lastmod></url>\n${published.map((p) => `  <url><loc>${baseUrl}/journal/${p.slug}/</loc><lastmod>${p.updated || p.date}</lastmod></url>`).join("\n")}\n</urlset>\n`;
 const sitemapWithPrivacy = sitemap.replace(
   `  <url><loc>${baseUrl}/</loc></url>\n`,
-  `  <url><loc>${baseUrl}/</loc></url>\n  <url><loc>${baseUrl}/privacy/</loc></url>\n`,
+  `  <url><loc>${baseUrl}/</loc></url>\n  <url><loc>${baseUrl}/web-design/</loc></url>\n  <url><loc>${baseUrl}/works/welfare-facility-website/</loc></url>\n  <url><loc>${baseUrl}/privacy/</loc></url>\n`,
 );
 await fs.writeFile(path.join(root, "sitemap.xml"), sitemapWithPrivacy);
 const rss = `<?xml version="1.0" encoding="UTF-8"?>\n<rss version="2.0"><channel><title>Sunny Side Journal</title><link>${baseUrl}/journal/</link><description>AIとデザイン、暮らしの実践ノート。</description><language>ja</language>${published.map((p) => `<item><title>${escapeXml(p.title)}</title><link>${baseUrl}/journal/${p.slug}/</link><guid>${baseUrl}/journal/${p.slug}/</guid><pubDate>${new Date(`${p.date}T00:00:00+09:00`).toUTCString()}</pubDate><description>${escapeXml(p.excerpt)}</description></item>`).join("")}</channel></rss>\n`;
