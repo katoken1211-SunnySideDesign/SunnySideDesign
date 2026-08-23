@@ -536,7 +536,9 @@ section {
   gap: 24px;
   overflow-x: auto;
   scroll-behavior: smooth;
-  padding-bottom: 12px;
+  padding: 8px 4px 20px;
+  scroll-padding-inline: 4px;
+  scroll-snap-type: x proximity;
   -webkit-overflow-scrolling: touch;
 }
 
@@ -548,6 +550,40 @@ section {
   overflow: hidden;
   box-shadow: var(--shadow-medium);
   transition: transform 0.3s ease, box-shadow 0.3s ease;
+  scroll-snap-align: start;
+}
+
+.work-card--project {
+  flex-basis: calc(38% - 12px);
+  border: 1px solid rgba(242, 106, 33, 0.12);
+}
+
+.work-card--project .work-image {
+  background: linear-gradient(145deg, #fff6f1, #eef9ff);
+}
+
+.work-card--project .work-image img {
+  padding: 10px;
+  object-fit: contain;
+}
+
+.work-card--project .work-card-body {
+  padding: 22px 24px 24px;
+}
+
+.work-card--project h3 {
+  margin-top: 5px;
+  font-size: 18px;
+  line-height: 1.6;
+}
+
+.work-card--project .work-detail-link {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding-top: 14px;
+  border-top: 1px solid rgba(43, 43, 43, 0.1);
 }
 
 .work-card:hover {
@@ -655,7 +691,27 @@ body.modal-open {
 
 @media (max-width: 640px) {
   .work-card {
-    flex-basis: calc(80vw - 16px);
+    flex-basis: min(82vw, 310px);
+  }
+
+  .works-grid {
+    width: calc(100% + 16px);
+    gap: 16px;
+    margin-right: -16px;
+    padding-right: 16px;
+  }
+
+  .work-card--project {
+    flex-basis: min(86vw, 324px);
+  }
+
+  .work-card--project .work-card-body {
+    padding: 18px 18px 20px;
+  }
+
+  .work-card--project h3 {
+    font-size: 17px;
+    line-height: 1.55;
   }
 
   .image-modal {
