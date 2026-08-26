@@ -5,7 +5,15 @@ const root = path.resolve(import.meta.dirname, "..");
 const baseUrl = "https://sunnyside-d.com";
 const sourceDir = path.join(root, "content/journal");
 const required = ["title", "date", "category", "excerpt", "author", "slug"];
-const categories = ["AI活用", "デザイン", "Web制作", "働き方・思考", "暮らし"];
+const categoryDefinitions = [
+  { name: "AI活用", slug: "ai", description: "AIを仕事や暮らしの中で実際に使いながら、試したことや気づいたことを紹介します。" },
+  { name: "デザイン", slug: "design", description: "デザイン制作やブランディング、制作プロセスについて紹介します。" },
+  { name: "Web制作", slug: "web", description: "Webサイト制作や運用、改善について紹介します。" },
+  { name: "働き方・思考", slug: "work", description: "AI・デザイン・仕事を通して考えた、働き方や学びを紹介します。" },
+  { name: "暮らし", slug: "life", description: "AIやデザインを家族との日常に活かした工夫や、暮らしの中での気づきを紹介します。" },
+];
+const categories = categoryDefinitions.map((category) => category.name);
+const featuredSlugs = ["claude-code-codex-workstyle", "planning-disneyland-with-ai", "why-i-started-sunnyside-design"];
 
 const escapeHtml = (value = "") => String(value).replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" })[c]);
 const escapeXml = escapeHtml;
@@ -77,6 +85,12 @@ function page(post, related) {
   return `<!DOCTYPE html><html lang="ja"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>${escapeHtml(post.title)} | Sunny Side Journal | SunnySideDesign</title><meta name="description" content="${escapeHtml(post.excerpt)}"><link rel="canonical" href="${url}">${post.draft ? '<meta name="robots" content="noindex, nofollow">' : ''}<meta property="og:title" content="${escapeHtml(post.title)}"><meta property="og:description" content="${escapeHtml(post.excerpt)}"><meta property="og:type" content="article"><meta property="og:url" content="${url}"><meta property="og:image" content="${image}"><meta property="article:published_time" content="${post.date}"><meta property="article:modified_time" content="${modified}"><meta name="twitter:card" content="summary_large_image"><link rel="icon" href="/assets/images/favicon.png"><link href="https://fonts.googleapis.com/css2?family=Poppins:wght@600;700&family=Noto+Sans+JP:wght@400;500;700&family=Caveat:wght@400;700&display=swap" rel="stylesheet"><link rel="stylesheet" href="/assets/css/style.css?v=20260813"><link rel="stylesheet" href="/assets/css/journal.css?v=20260813"><script type="application/ld+json">${JSON.stringify(articleJson).replace(/</g, "\\u003c")}</script><script type="application/ld+json">${JSON.stringify(breadcrumbJson).replace(/</g, "\\u003c")}</script><script defer src="/assets/js/script.js?v=20260813"></script></head><body class="journal-page">${post.draft ? '<div class="draft-notice">下書きプレビュー：公開一覧・sitemap・RSSには表示されません</div>' : ''}<header class="site-header"><div class="container header-inner"><a href="/" class="site-logo" aria-label="SunnySideDesign トップへ"><img src="/assets/images/logo.png" alt="SunnySideDesign"></a><nav class="site-nav" aria-label="メインナビゲーション"><a href="/">HOME</a><a href="/#service">SERVICE</a><a href="/#works">WORKS</a><a href="/journal/" aria-current="page">JOURNAL</a><a href="/#about">ABOUT</a><a href="/#contact">CONTACT</a></nav><button class="menu-toggle" aria-expanded="false" aria-label="メニューを開く"><span></span><span></span></button></div></header><main><nav class="breadcrumb container" aria-label="パンくず"><ol><li><a href="/">SunnySideDesign</a></li><li><a href="/journal/">Journal</a></li><li aria-current="page">${escapeHtml(post.title)}</li></ol></nav><header class="article-header"><div class="container article-header-inner"><div class="journal-meta"><span class="journal-category">${escapeHtml(post.category)}</span><time datetime="${post.date}">公開 ${dateJa(post.date)}</time>${post.updated ? `<time datetime="${post.updated}">更新 ${dateJa(post.updated)}</time>` : ""}<span>著者 ${escapeHtml(post.author)}</span></div><h1>${escapeHtml(post.title)}</h1><p class="article-lead">${escapeHtml(post.excerpt)}</p></div>${post.image ? `<img class="article-cover" src="${escapeHtml(post.image)}" alt="${escapeHtml(post.title)}のアイキャッチ" width="1200" height="630">` : ""}</header><div class="article-layout"><article class="article-body">${markdown(post.body)}</article><div class="article-after"><div class="author-panel"><img src="/assets/images/profile-icon.png" alt="katokenのプロフィール画像" width="96" height="96" loading="lazy"><div><span class="journal-eyebrow">Author</span><h2>katoken</h2><p class="author-role">営業マン × デザイナー × AIエンジニア</p><p>SunnySideDesign代表。制作とAI活用の実践から得た気づきを発信しています。</p></div></div>${related.length ? `<section class="journal-section"><div class="journal-section-head"><div><span class="journal-eyebrow">Related</span><h2 class="journal-heading">関連記事</h2></div></div><div class="journal-grid">${related.map(card).join("")}</div></section>` : ""}<div class="article-actions"><a class="outline-btn" href="/journal/">Journalトップへ戻る →</a><a class="primary-btn" href="/#contact">制作について相談する →</a></div></div></div></main><footer class="site-footer"><div class="container footer-inner"><div class="footer-left"><a href="/"><img src="/assets/images/logo.png" alt="SunnySideDesign"></a></div><nav class="footer-nav"><a href="/">HOME</a><a href="/#service">SERVICE</a><a href="/#works">WORKS</a><a href="/journal/">JOURNAL</a><a href="/#about">ABOUT</a></nav></div><div class="copyright">© SunnySideDesign All Rights Reserved.</div></footer></body></html>`;
 }
 
+function categoryPage(category, categoryPosts) {
+  const url = `${baseUrl}/journal/category/${category.slug}/`;
+  const breadcrumbJson = { "@context": "https://schema.org", "@type": "BreadcrumbList", itemListElement: [{ "@type": "ListItem", position: 1, name: "SunnySideDesign", item: `${baseUrl}/` }, { "@type": "ListItem", position: 2, name: "Journal", item: `${baseUrl}/journal/` }, { "@type": "ListItem", position: 3, name: category.name, item: url }] };
+  return `<!DOCTYPE html><html lang="ja"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>${escapeHtml(category.name)}の記事 | Sunny Side Journal | SunnySideDesign</title><meta name="description" content="${escapeHtml(category.description)}"><link rel="canonical" href="${url}"><meta property="og:title" content="${escapeHtml(category.name)}の記事 | Sunny Side Journal"><meta property="og:description" content="${escapeHtml(category.description)}"><meta property="og:type" content="website"><meta property="og:url" content="${url}"><meta property="og:image" content="${baseUrl}/assets/images/new-ogp.png"><meta name="twitter:card" content="summary_large_image"><link rel="icon" href="/assets/images/favicon.png"><link href="https://fonts.googleapis.com/css2?family=Poppins:wght@600;700&family=Noto+Sans+JP:wght@400;500;700&family=Caveat:wght@400;700&display=swap" rel="stylesheet"><link rel="stylesheet" href="/assets/css/style.css?v=20260813"><link rel="stylesheet" href="/assets/css/journal.css?v=20260826"><link rel="stylesheet" href="/assets/css/pages.css?v=20260823"><script type="application/ld+json">${JSON.stringify(breadcrumbJson).replace(/</g, "\\u003c")}</script><script defer src="/assets/js/script.js?v=20260826"></script></head><body class="journal-page"><header class="site-header"><div class="container header-inner"><a href="/" class="site-logo" aria-label="SunnySideDesign トップへ"><img src="/assets/images/logo.png" alt="SunnySideDesign"></a><nav class="site-nav" aria-label="メインナビゲーション"><a href="/">HOME</a><a href="/#service">SERVICE</a><a href="/#works">WORKS</a><a href="/journal/" aria-current="page">JOURNAL</a><a href="/#about">ABOUT</a><a href="/#contact">CONTACT</a></nav><button class="menu-toggle" aria-expanded="false" aria-label="メニューを開く"><span></span><span></span></button></div></header><main><nav class="breadcrumb container" aria-label="パンくず"><ol><li><a href="/">SunnySideDesign</a></li><li><a href="/journal/">Journal</a></li><li aria-current="page">${escapeHtml(category.name)}</li></ol></nav><header class="category-header"><div class="container"><span class="journal-eyebrow">Journal Category</span><h1>${escapeHtml(category.name)}</h1><p>${escapeHtml(category.description)}</p></div></header><section class="journal-section" aria-labelledby="category-articles"><div class="container"><div class="journal-section-head"><div><span class="journal-eyebrow">Articles</span><h2 class="journal-heading" id="category-articles">${escapeHtml(category.name)}の記事</h2></div><p class="category-count">${categoryPosts.length}件</p></div><div class="journal-grid">${categoryPosts.map(card).join("")}</div><div class="category-back"><a class="outline-btn" href="/journal/#categories-title">すべてのテーマを見る →</a></div></div></section></main><footer class="site-footer"><div class="container footer-inner"><div class="footer-left"><a href="/"><img src="/assets/images/logo.png" alt="SunnySideDesign"></a></div><nav class="footer-nav"><a href="/">HOME</a><a href="/#service">SERVICE</a><a href="/#works">WORKS</a><a href="/journal/">JOURNAL</a><a href="/#about">ABOUT</a><a href="/privacy/">PRIVACY POLICY</a></nav></div><div class="copyright">© SunnySideDesign All Rights Reserved.</div></footer></body></html>`;
+}
+
 function replaceBlock(source, name, content) {
   const re = new RegExp(`<!-- ${name}_START -->[\\s\\S]*?<!-- ${name}_END -->`);
   if (!re.test(source)) throw new Error(`${name} の生成マーカーが見つかりません`);
@@ -88,9 +102,13 @@ const posts = await Promise.all(files.map(async (file) => parsePost(file, await 
 const slugs = new Set(); for (const post of posts) { if (slugs.has(post.slug)) throw new Error(`slugが重複しています: ${post.slug}`); slugs.add(post.slug); }
 posts.sort((a, b) => b.date.localeCompare(a.date));
 const published = posts.filter((post) => !post.draft);
+if (!published.length) throw new Error("公開記事が0件のため、Journalを生成できません");
 for (const post of posts) {
   const output = path.join(root, "journal", post.slug);
-  const related = published.filter((x) => x.slug !== post.slug && x.category === post.category).slice(0, 3);
+  const related = [
+    ...published.filter((x) => x.slug !== post.slug && x.category === post.category),
+    ...published.filter((x) => x.slug !== post.slug && x.category !== post.category),
+  ].slice(0, 3);
   const html = page(post, related)
     .replace('<div class="article-after">', `<div class="article-after">${serviceLinks}`)
     .replace('<link rel="stylesheet" href="/assets/css/journal.css?v=20260813">', '<link rel="stylesheet" href="/assets/css/journal.css?v=20260813"><link rel="stylesheet" href="/assets/css/pages.css?v=20260823">')
@@ -101,16 +119,26 @@ for (const post of posts) {
   await fs.writeFile(path.join(output, "index.html"), html);
 }
 
+const indexedCategories = categoryDefinitions
+  .map((category) => ({ ...category, posts: published.filter((post) => post.category === category.name) }))
+  .filter((category) => category.posts.length > 0);
+for (const category of indexedCategories) {
+  const output = path.join(root, "journal", "category", category.slug);
+  await fs.mkdir(output, { recursive: true });
+  await fs.writeFile(path.join(output, "index.html"), categoryPage(category, category.posts));
+}
+
 let journalIndex = await fs.readFile(path.join(root, "journal/index.html"), "utf8");
-journalIndex = replaceBlock(journalIndex, "JOURNAL_FEATURED", published.filter((x) => x.featured).slice(0, 3).length ? `<div class="journal-grid">${published.filter((x) => x.featured).slice(0, 3).map(card).join("")}</div>` : '<div class="journal-empty"><div><strong>おすすめ記事を準備しています</strong><p>公開後、特に読んでいただきたい記事をここでご紹介します。</p></div></div>');
-journalIndex = replaceBlock(journalIndex, "JOURNAL_LATEST", published.length ? `<div class="journal-grid">${published.map(card).join("")}</div>` : '<div class="journal-empty"><div><strong>最初の記事を準備しています</strong><p>SunnySideDesignの実体験と考え方を、ここから少しずつ蓄積していきます。</p></div></div>');
+const featured = featuredSlugs.map((slug) => published.find((post) => post.slug === slug)).filter(Boolean);
+journalIndex = replaceBlock(journalIndex, "JOURNAL_FEATURED", `<div class="journal-grid">${featured.map(card).join("")}</div>`);
+journalIndex = replaceBlock(journalIndex, "JOURNAL_LATEST", `<div class="journal-grid">${published.map(card).join("")}</div>`);
 await fs.writeFile(path.join(root, "journal/index.html"), journalIndex);
 
 let home = await fs.readFile(path.join(root, "index.html"), "utf8");
-home = replaceBlock(home, "JOURNAL_HOME", published.length ? `<div class="journal-grid">${published.slice(0, 3).map(card).join("")}</div>` : '<div class="home-journal-empty"><span aria-hidden="true">✦</span><p>最初の記事を準備しています。SunnySideDesignの試行錯誤を、ここから少しずつお届けします。</p></div>');
+home = replaceBlock(home, "JOURNAL_HOME", `<div class="journal-grid">${published.slice(0, 3).map(card).join("")}</div>`);
 await fs.writeFile(path.join(root, "index.html"), home);
 
-const sitemap = `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n  <url><loc>${baseUrl}/</loc></url>\n  <url><loc>${baseUrl}/journal/</loc><lastmod>${new Date().toISOString().slice(0, 10)}</lastmod></url>\n${published.map((p) => `  <url><loc>${baseUrl}/journal/${p.slug}/</loc><lastmod>${p.updated || p.date}</lastmod></url>`).join("\n")}\n</urlset>\n`;
+const sitemap = `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n  <url><loc>${baseUrl}/</loc></url>\n  <url><loc>${baseUrl}/journal/</loc><lastmod>${new Date().toISOString().slice(0, 10)}</lastmod></url>\n${indexedCategories.map((category) => `  <url><loc>${baseUrl}/journal/category/${category.slug}/</loc><lastmod>${category.posts[0].updated || category.posts[0].date}</lastmod></url>`).join("\n")}\n${published.map((p) => `  <url><loc>${baseUrl}/journal/${p.slug}/</loc><lastmod>${p.updated || p.date}</lastmod></url>`).join("\n")}\n</urlset>\n`;
 const sitemapWithPrivacy = sitemap.replace(
   `  <url><loc>${baseUrl}/</loc></url>\n`,
   `  <url><loc>${baseUrl}/</loc></url>\n  <url><loc>${baseUrl}/web-design/</loc></url>\n  <url><loc>${baseUrl}/works/welfare-facility-website/</loc></url>\n  <url><loc>${baseUrl}/privacy/</loc></url>\n`,

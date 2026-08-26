@@ -43,8 +43,15 @@
 .category-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 16px; }
 .category-card { display: block; padding: 24px 20px; border: 1px solid rgba(23, 50, 77, .09); border-radius: 20px; background: #fff; transition: transform .25s ease, border-color .25s ease; }
 .category-card:hover { transform: translateY(-4px); border-color: var(--color-orange); }
+.category-card--inactive { background: #fafafa; }
+.category-card--inactive:hover { transform: none; border-color: rgba(23, 50, 77, .09); }
 .category-card strong { display: block; margin-bottom: 8px; color: var(--journal-navy); font-size: 17px; }
 .category-card span { color: var(--color-muted); font-size: 13px; line-height: 1.7; }
+.category-header { padding: 76px 0 68px; background: linear-gradient(125deg, #fffaf2, #fff 54%, #eaf8ff); }
+.category-header h1 { margin: 4px 0 18px; color: var(--journal-navy); font-family: "Poppins", "Noto Sans JP", sans-serif; font-size: clamp(40px, 7vw, 68px); line-height: 1.2; }
+.category-header p { max-width: 720px; margin: 0; color: var(--color-muted); font-size: 17px; line-height: 2; }
+.category-count { margin: 0; color: var(--color-muted); }
+.category-back { margin-top: 44px; }
 
 .journal-story { display: grid; grid-template-columns: .8fr 1.2fr; gap: 70px; align-items: start; }
 .journal-story-copy { max-width: 720px; }
