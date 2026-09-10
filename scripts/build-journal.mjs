@@ -1,5 +1,6 @@
 import { promises as fs } from "node:fs";
 import path from "node:path";
+import { createHash } from "node:crypto";
 
 const root = path.resolve(import.meta.dirname, "..");
 const baseUrl = "https://sunnyside-d.com";
@@ -14,6 +15,15 @@ const categoryDefinitions = [
 ];
 const categories = categoryDefinitions.map((category) => category.name);
 const featuredSlugs = ["claude-code-codex-workstyle", "planning-disneyland-with-ai", "why-i-started-sunnyside-design"];
+const args = process.argv.slice(2);
+const check = args.includes("--check");
+const slugIndex = args.indexOf("--slug");
+const selectedSlug = slugIndex >= 0 ? args[slugIndex + 1] : null;
+if (slugIndex >= 0 && (!selectedSlug || selectedSlug.startsWith("--"))) throw new Error("--slug にはslugを指定してください");
+const unknownArgs = args.filter((arg, index) => arg !== "--check" && arg !== "--slug" && index !== slugIndex + 1);
+if (unknownArgs.length) throw new Error(`不明なオプションです: ${unknownArgs.join(", ")}`);
+const changedFiles = [];
+const mismatchedFiles = [];
 
 const escapeHtml = (value = "") => String(value).replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" })[c]);
 const escapeXml = escapeHtml;
@@ -38,7 +48,53 @@ function parsePost(filename, source) {
   for (const key of required) if (!data[key]) throw new Error(`${filename}: ${key} は必須です`);
   if (!categories.includes(data.category)) throw new Error(`${filename}: categoryは ${categories.join(" / ")} のいずれかです`);
   if (!/^[a-z0-9]+(?:-[a-z0-9]+)*$/.test(data.slug)) throw new Error(`${filename}: slugは半角英小文字・数字・ハイフンのみ使用できます`);
+  for (const key of ["date", "updated"]) if (data[key] !== undefined && !isValidDate(data[key])) throw new Error(`${filename}: ${key} は実在する日付をYYYY-MM-DD形式で指定してください`);
+  if (data.updated && data.updated < data.date) throw new Error(`${filename}: updated は date 以降の日付にしてください`);
+  for (const key of ["title", "category", "excerpt", "author", "slug", "image"]) if (data[key] !== undefined && typeof data[key] !== "string") throw new Error(`${filename}: ${key} は文字列で指定してください`);
+  for (const key of ["featured", "draft"]) if (data[key] !== undefined && typeof data[key] !== "boolean") throw new Error(`${filename}: ${key} はtrueまたはfalseで指定してください`);
   return { ...data, body: match[2].trim(), filename };
+}
+
+function isValidDate(value) {
+  if (typeof value !== "string" || !/^\d{4}-\d{2}-\d{2}$/.test(value)) return false;
+  const date = new Date(`${value}T00:00:00Z`);
+  return !Number.isNaN(date.valueOf()) && date.toISOString().slice(0, 10) === value;
+}
+
+function prettyHtml(source) {
+  const blocks = "html|head|body|main|header|footer|nav|section|article|aside|div|ol|ul|li|h1|h2|h3|p|blockquote|pre|table|thead|tbody|tr|script";
+  return `<!-- AUTO-GENERATED: DO NOT EDIT DIRECTLY -->\n${source.replace(new RegExp(`><(?=/?(?:${blocks})(?:\\s|>))`, "g"), ">\n<").replace(/<\/(head|body|html)>/g, "</$1>\n").replace(/\n{2,}/g, "\n").trim()}\n`;
+}
+
+async function writeIfChanged(relativePath, content) {
+  const target = path.join(root, relativePath);
+  let current = null;
+  try { current = await fs.readFile(target, "utf8"); } catch (error) { if (error.code !== "ENOENT") throw error; }
+  if (current === content) return;
+  (check ? mismatchedFiles : changedFiles).push(relativePath);
+  if (!check) { await fs.mkdir(path.dirname(target), { recursive: true }); await fs.writeFile(target, content); }
+}
+
+async function validateImages(posts) {
+  for (const post of posts) {
+    const references = [post.image, ...[...post.body.matchAll(/!\[[^\]]*\]\(([^ )]+)(?:\s+"[^"]*")?\)/g)].map((match) => match[1])].filter(Boolean);
+    for (const reference of references) {
+      if (/^(?:https?:)?\/\//i.test(reference) || reference.startsWith("data:")) continue;
+      let pathname;
+      try { pathname = decodeURIComponent(reference.split(/[?#]/, 1)[0]); } catch { throw new Error(`${post.filename}: invalid image reference: ${reference}`); }
+      const target = path.join(root, pathname.replace(/^\//, ""));
+      try { await fs.access(target); } catch { throw new Error(`${post.filename}: image reference missing: ${reference}`); }
+    }
+  }
+  const imageRoot = path.join(root, "assets/images/journal");
+  const entries = (await fs.readdir(imageRoot, { withFileTypes: true })).filter((entry) => entry.isFile() && entry.name !== "README.md");
+  const hashes = new Map();
+  for (const entry of entries) {
+    const digest = createHash("sha256").update(await fs.readFile(path.join(imageRoot, entry.name))).digest("hex");
+    hashes.set(digest, [...(hashes.get(digest) || []), entry.name]);
+  }
+  const duplicates = [...hashes.values()].filter((names) => names.length > 1);
+  if (duplicates.length) throw new Error(`Duplicate image content detected:\n${duplicates.map((names) => `- ${names.join(", ")}`).join("\n")}`);
 }
 
 function inline(text) {
@@ -100,11 +156,13 @@ function replaceBlock(source, name, content) {
 const files = (await fs.readdir(sourceDir)).filter((x) => x.endsWith(".md"));
 const posts = await Promise.all(files.map(async (file) => parsePost(file, await fs.readFile(path.join(sourceDir, file), "utf8"))));
 const slugs = new Set(); for (const post of posts) { if (slugs.has(post.slug)) throw new Error(`slugが重複しています: ${post.slug}`); slugs.add(post.slug); }
+await validateImages(posts);
 posts.sort((a, b) => b.date.localeCompare(a.date));
 const published = posts.filter((post) => !post.draft);
 if (!published.length) throw new Error("公開記事が0件のため、Journalを生成できません");
-for (const post of posts) {
-  const output = path.join(root, "journal", post.slug);
+if (selectedSlug && !slugs.has(selectedSlug)) throw new Error(`記事が見つかりません: ${selectedSlug}`);
+const articleTargets = selectedSlug ? posts.filter((post) => post.slug === selectedSlug) : posts;
+for (const post of articleTargets) {
   const related = [
     ...published.filter((x) => x.slug !== post.slug && x.category === post.category),
     ...published.filter((x) => x.slug !== post.slug && x.category !== post.category),
@@ -115,35 +173,56 @@ for (const post of posts) {
     .replace("journal.css?v=20260813", "journal.css?v=20260823")
     .replace('</head>', '<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2801111628934180" crossorigin="anonymous"></script></head>')
     .replace('<a href="/#about">ABOUT</a></nav>', '<a href="/#about">ABOUT</a><a href="/privacy/">PRIVACY POLICY</a></nav>');
-  await fs.mkdir(output, { recursive: true });
-  await fs.writeFile(path.join(output, "index.html"), html);
+  await writeIfChanged(`journal/${post.slug}/index.html`, prettyHtml(html));
 }
 
 const indexedCategories = categoryDefinitions
   .map((category) => ({ ...category, posts: published.filter((post) => post.category === category.name) }))
   .filter((category) => category.posts.length > 0);
-for (const category of indexedCategories) {
-  const output = path.join(root, "journal", "category", category.slug);
-  await fs.mkdir(output, { recursive: true });
-  await fs.writeFile(path.join(output, "index.html"), categoryPage(category, category.posts));
+const selectedPost = selectedSlug ? posts.find((post) => post.slug === selectedSlug) : null;
+for (const category of indexedCategories.filter((category) => !selectedPost || category.name === selectedPost.category)) {
+  await writeIfChanged(`journal/category/${category.slug}/index.html`, prettyHtml(categoryPage(category, category.posts)));
 }
 
 let journalIndex = await fs.readFile(path.join(root, "journal/index.html"), "utf8");
 const featured = featuredSlugs.map((slug) => published.find((post) => post.slug === slug)).filter(Boolean);
 journalIndex = replaceBlock(journalIndex, "JOURNAL_FEATURED", `<div class="journal-grid">${featured.map(card).join("")}</div>`);
 journalIndex = replaceBlock(journalIndex, "JOURNAL_LATEST", `<div class="journal-grid">${published.map(card).join("")}</div>`);
-await fs.writeFile(path.join(root, "journal/index.html"), journalIndex);
+await writeIfChanged("journal/index.html", journalIndex);
 
 let home = await fs.readFile(path.join(root, "index.html"), "utf8");
 home = replaceBlock(home, "JOURNAL_HOME", `<div class="journal-grid">${published.slice(0, 3).map(card).join("")}</div>`);
-await fs.writeFile(path.join(root, "index.html"), home);
+await writeIfChanged("index.html", home);
 
-const sitemap = `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n  <url><loc>${baseUrl}/</loc></url>\n  <url><loc>${baseUrl}/journal/</loc><lastmod>${new Date().toISOString().slice(0, 10)}</lastmod></url>\n${indexedCategories.map((category) => `  <url><loc>${baseUrl}/journal/category/${category.slug}/</loc><lastmod>${category.posts[0].updated || category.posts[0].date}</lastmod></url>`).join("\n")}\n${published.map((p) => `  <url><loc>${baseUrl}/journal/${p.slug}/</loc><lastmod>${p.updated || p.date}</lastmod></url>`).join("\n")}\n</urlset>\n`;
+const latestDate = (items) => items.reduce((latest, post) => (post.updated || post.date) > latest ? (post.updated || post.date) : latest, items[0].date);
+const sitemap = `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n  <url><loc>${baseUrl}/</loc></url>\n  <url><loc>${baseUrl}/journal/</loc><lastmod>${latestDate(published)}</lastmod></url>\n${indexedCategories.map((category) => `  <url><loc>${baseUrl}/journal/category/${category.slug}/</loc><lastmod>${latestDate(category.posts)}</lastmod></url>`).join("\n")}\n${published.map((p) => `  <url><loc>${baseUrl}/journal/${p.slug}/</loc><lastmod>${p.updated || p.date}</lastmod></url>`).join("\n")}\n</urlset>\n`;
 const sitemapWithPrivacy = sitemap.replace(
   `  <url><loc>${baseUrl}/</loc></url>\n`,
   `  <url><loc>${baseUrl}/</loc></url>\n  <url><loc>${baseUrl}/web-design/</loc></url>\n  <url><loc>${baseUrl}/works/welfare-facility-website/</loc></url>\n  <url><loc>${baseUrl}/privacy/</loc></url>\n`,
 );
-await fs.writeFile(path.join(root, "sitemap.xml"), sitemapWithPrivacy);
+await writeIfChanged("sitemap.xml", sitemapWithPrivacy);
 const rss = `<?xml version="1.0" encoding="UTF-8"?>\n<rss version="2.0"><channel><title>Sunny Side Journal</title><link>${baseUrl}/journal/</link><description>AIとデザイン、暮らしの実践ノート。</description><language>ja</language>${published.map((p) => `<item><title>${escapeXml(p.title)}</title><link>${baseUrl}/journal/${p.slug}/</link><guid>${baseUrl}/journal/${p.slug}/</guid><pubDate>${new Date(`${p.date}T00:00:00+09:00`).toUTCString()}</pubDate><description>${escapeXml(p.excerpt)}</description></item>`).join("")}</channel></rss>\n`;
-await fs.writeFile(path.join(root, "journal/rss.xml"), rss);
-console.log(`Journal build complete: ${published.length} published, ${posts.length - published.length} draft`);
+await writeIfChanged("journal/rss.xml", rss);
+if (selectedSlug) {
+  const categorySlug = categoryDefinitions.find((category) => category.name === selectedPost.category).slug;
+  const expected = new Set([
+    `journal/${selectedSlug}/index.html`,
+    `journal/category/${categorySlug}/index.html`,
+    "journal/index.html", "index.html", "journal/rss.xml", "sitemap.xml",
+  ]);
+  const unexpected = (check ? mismatchedFiles : changedFiles).filter((file) => !expected.has(file));
+  if (unexpected.length) {
+    console.error(`Unexpected files changed for --slug ${selectedSlug}:\n${unexpected.map((file) => `- ${file}`).join("\n")}`);
+    process.exitCode = 1;
+  }
+}
+if (check && mismatchedFiles.length) {
+  console.error("Generated files are out of date:");
+  for (const file of mismatchedFiles) console.error(`- ${file}`);
+  process.exitCode = 1;
+} else {
+  console.log(`Journal ${check ? "check" : "build"} complete: ${published.length} published, ${posts.length - published.length} draft`);
+}
+const reported = check ? mismatchedFiles : changedFiles;
+console.log(`${check ? "Mismatched" : "Changed"} files: ${reported.length ? "" : "none"}`);
+for (const file of reported) console.log(`- ${file}`);

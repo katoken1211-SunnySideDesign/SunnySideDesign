@@ -171,7 +171,7 @@ AIも、より良い結果を出そうとして周辺のコードまで変更す
 
 コードだけでは分かりにくい「見た目の問題」は、実際の画面を見てもらった方が伝えやすいことがあります。
 
-![スクリーンショットやWeb画面を見ながら、人とAIが修正内容を相談している様子](/assets/images/journal/ai-coding-with-screenshot.jpg)
+![スクリーンショットやWeb画面を見ながら、人とAIが修正内容を相談している様子](/assets/images/journal/good-ai-coding-instructions.jpg)
 
 ### 3. 変更したい内容
 

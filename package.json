@@ -1,0 +1,8 @@
+{
+  "private": true,
+  "scripts": {
+    "journal:build": "node scripts/build-journal.mjs",
+    "journal:article": "node scripts/build-journal.mjs",
+    "journal:check": "node scripts/build-journal.mjs --check"
+  }
+}
