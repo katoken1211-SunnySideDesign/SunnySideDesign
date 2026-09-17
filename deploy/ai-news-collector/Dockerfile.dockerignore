@@ -1,0 +1,9 @@
+**
+!scripts/
+!scripts/collect-ai-news.py
+!scripts/schedule-ai-news.py
+!scripts/ai_news_safety.py
+!deploy/
+!deploy/ai-news-collector/
+!deploy/ai-news-collector/Dockerfile
+!deploy/ai-news-collector/Dockerfile.dockerignore

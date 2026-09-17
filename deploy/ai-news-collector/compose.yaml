@@ -1,0 +1,52 @@
+{
+  "name": "ai-news-collector",
+  "services": {
+    "ai-news-collector": {
+      "build": {
+        "context": "../..",
+        "dockerfile": "deploy/ai-news-collector/Dockerfile"
+      },
+      "image": "ai-news-collector:local",
+      "pull_policy": "never",
+      "container_name": "ai-news-collector",
+      "restart": "unless-stopped",
+      "init": true,
+      "user": "${AI_NEWS_UID:?Set the NAS user UID}:${AI_NEWS_GID:?Set the NAS group GID}",
+      "environment": {
+        "TZ": "Asia/Tokyo",
+        "AI_NEWS_UID": "${AI_NEWS_UID:?Set the NAS user UID}",
+        "AI_NEWS_GID": "${AI_NEWS_GID:?Set the NAS group GID}"
+      },
+      "command": ["--data-dir", "/data", "--timeout-seconds", "180", "--retry-seconds", "900"],
+      "volumes": [
+        {
+          "type": "bind",
+          "source": "${AI_NEWS_INBOX_DIR:?Set the absolute NAS inbox path}/items",
+          "target": "/data/items",
+          "bind": {"create_host_path": false}
+        },
+        {
+          "type": "bind",
+          "source": "${AI_NEWS_INBOX_DIR:?Set the absolute NAS inbox path}/runs",
+          "target": "/data/runs",
+          "bind": {"create_host_path": false}
+        },
+        {
+          "type": "bind",
+          "source": "${AI_NEWS_INBOX_DIR:?Set the absolute NAS inbox path}/scheduler",
+          "target": "/data/scheduler",
+          "bind": {"create_host_path": false}
+        }
+      ],
+      "read_only": true,
+      "tmpfs": ["/tmp:rw,noexec,nosuid,size=16m"],
+      "cap_drop": ["ALL"],
+      "security_opt": ["no-new-privileges:true"],
+      "cpus": 0.5,
+      "mem_limit": "256m",
+      "pids_limit": 32,
+      "stop_grace_period": "15s",
+      "logging": {"driver": "json-file", "options": {"max-size": "5m", "max-file": "3"}}
+    }
+  }
+}

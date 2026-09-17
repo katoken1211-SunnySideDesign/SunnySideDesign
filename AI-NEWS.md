@@ -3,6 +3,14 @@
 Python 3.11+ standard-library RSS collector. No installation, API keys, LLM,
 article generation, publishing, scheduling, or Git operations are performed.
 
+An optional, separate container scheduler is available for **Monday and
+Wednesday at 17:30 Asia/Tokyo**. It wraps this collector without changing its
+manual command. See [UGOS setup and restart behavior](deploy/ai-news-collector/UGOS-SETUP.md)
+and [Compose configuration](deploy/ai-news-collector/compose.yaml). Deployment is
+not performed automatically; the existing `codex-agent` container is unrelated.
+Only `items`, `runs`, and `scheduler` are mounted; drafts stay outside the container.
+The UGOS host preflight checks paths and access as the configured non-root UID/GID.
+
 From the repository root:
 
 ```sh
